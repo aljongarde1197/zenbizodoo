@@ -21,6 +21,7 @@ from app.security import (
     positive_id,
     choice,
 )
+from mcp.server.transport_security import TransportSecuritySettings
 
 
 settings = Settings.from_env()
@@ -38,9 +39,31 @@ logging.basicConfig(
 # MCP configuration
 # ---------------------------------------------------------------------------
 
+# mcp_kwargs: dict[str, Any] = {
+#     "stateless_http": True,
+#     "json_response": True,
+# }
+
 mcp_kwargs: dict[str, Any] = {
     "stateless_http": True,
     "json_response": True,
+    "transport_security": TransportSecuritySettings(
+        enable_dns_rebinding_protection=True,
+        allowed_hosts=[
+            "zenbizodoo-production.up.railway.app",
+            "zenbizodoo-production.up.railway.app:*",
+            "localhost",
+            "localhost:*",
+            "127.0.0.1",
+            "127.0.0.1:*",
+        ],
+        allowed_origins=[
+            "https://zenbizodoo-production.up.railway.app",
+            "https://zenbizodoo-production.up.railway.app:*",
+            "http://localhost:*",
+            "http://127.0.0.1:*",
+        ],
+    ),
 }
 
 
